@@ -1,0 +1,17 @@
+[logging]
+version = 1
+disable_existing_loggers = false
+
+[logging.loggers.root]
+handlers = ["rich"]
+level = "DEBUG"
+propagate = true
+
+[logging.handlers.rich]
+level="INFO"
+formatter="simple"
+class="rich.logging.RichHandler"
+
+[logging.formatters.simple]
+format = "%(message)s"
+datefmt="[%m/%d/%Y %X]"
