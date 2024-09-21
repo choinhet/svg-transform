@@ -8,21 +8,20 @@ from functools import lru_cache
 from logging.handlers import QueueHandler, QueueListener
 from pathlib import Path
 
-from pydantic import ConfigDict, validate_call, TypeAdapter
-
 import resources
 from backend.custom_log_handlers.streamlit_log_handler import \
     StreamlitLogHandler
 from data_structures import AppConfig
+from pydantic import ConfigDict, validate_call, TypeAdapter
 
 log = logging.getLogger("svg-transform")
 
 
 @lru_cache
-def validation_configs(frozen=True):
+def validation_configs():
     return ConfigDict(
         arbitrary_types_allowed=True,
-        frozen=frozen,
+        frozen=True,
         from_attributes=True,
         revalidate_instances="never",
         use_enum_values=True,
