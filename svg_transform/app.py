@@ -6,7 +6,6 @@ from typing import cast
 
 import streamlit as st
 from pydantic import validate_call
-from streamlit.runtime.uploaded_file_manager import UploadedFile
 
 from backend.colors import load_colors
 from backend.configs import read_app_toml, set_logging_configs, \
@@ -19,12 +18,11 @@ log = logging.getLogger("svg-transform")
 
 
 @validate_call(config=validation_configs())
-def load_file(file: UploadedFile, view_box: ViewBox) -> ViewBox:
-    svg_text = file.read().decode()
+def load_file(file_name: str, svg_text: str, view_box: ViewBox) -> ViewBox:
     template_html = read_resource("svg_display.html")
     template = template_html.replace("%SVG%", svg_text)
     log.info("Updated last file in view_box")
-    return view_box.copy(update=dict(filename=file.name, current_file=template))
+    return view_box.copy(update=dict(filename=file_name, current_file=template))
 
 
 @st.cache_resource
@@ -49,8 +47,14 @@ async def main():
 
     with tab1:
         new_file = st.file_uploader("Upload Image", type=["svg"])
+
+        if new_file is None:
+            filename = "Dog Logo Svg.svg"
+            loaded = read_resource(filename)
+            view_box = load_file(filename, loaded, view_box)
+
         if new_file is not None:
-            view_box = load_file(new_file, view_box)
+            view_box = load_file(new_file.name, new_file.read().decode(), view_box)
 
         if view_box.current_file is not None:
             st.download_button(
@@ -88,6 +92,7 @@ async def main():
         view_box = await console_view(view_box)
 
     st.session_state["view_box"] = view_box
+
 
 if __name__ == "__main__":
     asyncio.run(main())
