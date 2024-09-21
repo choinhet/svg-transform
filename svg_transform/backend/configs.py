@@ -8,10 +8,10 @@ from functools import lru_cache
 from logging.handlers import QueueHandler, QueueListener
 from pathlib import Path
 
-import resources
-from backend.custom_log_handlers.streamlit_log_handler import \
+import svg_transform.resources as resources
+from svg_transform.backend.custom_log_handlers.streamlit_log_handler import \
     StreamlitLogHandler
-from data_structures import AppConfig
+from svg_transform.data_structures import AppConfig
 from pydantic import ConfigDict, validate_call, TypeAdapter
 
 log = logging.getLogger("svg-transform")

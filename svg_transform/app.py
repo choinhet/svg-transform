@@ -7,11 +7,11 @@ from typing import cast
 import streamlit as st
 from pydantic import validate_call
 
-from backend.colors import load_colors
-from backend.configs import read_app_toml, set_logging_configs, \
+from svg_transform.backend.colors import load_colors
+from svg_transform.backend.configs import read_app_toml, set_logging_configs, \
     read_resource, validation_configs
-from backend.data_structure import ViewBox
-from frontend.console_view import console_view
+from svg_transform.backend.data_structure import ViewBox
+from svg_transform.frontend.console_view import console_view
 
 st.set_page_config("Svg Transform", "🖼️")
 log = logging.getLogger("svg-transform")
